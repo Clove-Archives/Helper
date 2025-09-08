@@ -197,7 +197,7 @@ async function manageGuilds() {
     });
     
     // Check if the bot is in the target guild
-    const targetGuild = guilds.get(GUILD_TO_KEEP);
+  const targetGuild = guilds.get(GUILD_TO_KEEP!);
     if (!targetGuild) {
       console.log(`⚠️ Bot is not in the target guild (ID: ${GUILD_TO_KEEP})`);
       console.log('Available guild IDs:');
@@ -610,7 +610,7 @@ async function registerCommands() {
 
   try {
     console.log('🔄 Started refreshing application (/) commands');
-    const rest = new REST({ version: '10' }).setToken(TOKEN);
+  const rest = new REST({ version: '10' }).setToken(TOKEN!);
     
     // Check if we have a specific guild ID for development
     const GUILD_ID = process.env.GUILD_ID;
@@ -619,7 +619,7 @@ async function registerCommands() {
       // Guild commands update instantly
       console.log(`🔄 Registering commands to guild: ${GUILD_ID}`);
       await rest.put(
-        Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID),
+  Routes.applicationGuildCommands(CLIENT_ID!, GUILD_ID!),
         { body: commands },
       );
       console.log(`✅ Successfully registered ${commands.length} commands to guild`);
@@ -627,7 +627,7 @@ async function registerCommands() {
       // Global commands can take up to an hour to propagate
       console.log('🔄 Registering global commands (this can take up to an hour to propagate)');
       await rest.put(
-        Routes.applicationCommands(CLIENT_ID),
+  Routes.applicationCommands(CLIENT_ID!),
         { body: commands },
       );
       console.log(`✅ Successfully registered ${commands.length} global commands`);
@@ -1202,9 +1202,9 @@ client.on(Events.InteractionCreate, async (interaction: any) => {
  if (interaction.isChatInputCommand()) {
    handleCommandInteraction(interaction);
  } else if (interaction.isButton()) {
-   handleButtonInteraction(interaction);
+  handleModButtonInteraction(interaction);
  } else if (interaction.isModalSubmit()) {
-   handleModalInteraction(interaction);
+  handleCommandInteraction(interaction);
  }
 });
 

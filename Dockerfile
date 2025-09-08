@@ -7,6 +7,8 @@ COPY package*.json ./
 
 # Install dependencies with legacy peer deps
 RUN npm install --legacy-peer-deps
+# Install music encryption libraries
+RUN npm install sodium-native sodium libsodium-wrappers tweetnacl
 
 # Copy source code
 COPY . .

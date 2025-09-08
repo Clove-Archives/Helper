@@ -680,12 +680,12 @@ async function logCommandIds(client: Client) {
     
     sortedCommands.forEach(command => {
       // Handle commands with subcommands
-      if (command.options && command.options.length > 0) {
-        const subcommands = command.options.filter(option => option.type === 1); // SUB_COMMAND type
+      if ((command as any).options && (command as any).options.length > 0) {
+        const subcommands = (command as any).options.filter((option: any) => option.type === 1); // SUB_COMMAND type
         if (subcommands.length > 0) {
           console.log(`\n🔸 ${command.name.toUpperCase()} (has subcommands):`);
           commandMentions += `\n**${command.name.toUpperCase()}** (subcommands):\n`;
-          subcommands.forEach(sub => {
+          subcommands.forEach((sub: any) => {
             const mention = `</${command.name} ${sub.name}:${command.id}>`;
             console.log(`   ${mention}`);
             commandMentions += `• ${mention}\n`;
@@ -775,7 +775,7 @@ async function handleColorSelectCommand(interaction: ChatInputCommandInteraction
     componentType: ComponentType.StringSelect
   });
 
-  collector.on('collect', async (i) => {
+  collector.on('collect', async (i: any) => {
     try {
       if (i.customId === 'color_category_select') {
         const selectedCategory = i.values[0];
@@ -803,7 +803,7 @@ async function handleColorSelectCommand(interaction: ChatInputCommandInteraction
     }
   });
 
-  collector.on('end', async (collected, reason) => {
+  collector.on('end', async (collected: any, reason: any) => {
     if (reason === 'time') {
       try {
         // Check if the message still exists and can be edited
@@ -1096,7 +1096,7 @@ client.once(Events.ClientReady, async () => {
 /**
 * Error event handler
 */
-client.on('error', (error) => {
+client.on('error', (error: any) => {
  console.error('❌ Discord client error:', error);
  writeHealthStatus('offline', startTime);
 });
@@ -1157,7 +1157,7 @@ client.on(Events.GuildMemberAdd, async (member: GuildMember) => {
 /**
 * Message create event handler for message debugging
 */
-client.on(Events.MessageCreate, (message) => {
+client.on(Events.MessageCreate, (message: any) => {
  // Ignore bot messages to prevent loops
  if (message.author.bot) return;
  
@@ -1170,7 +1170,7 @@ client.on(Events.MessageCreate, (message) => {
 /**
 * Message update event handler for debugging
 */
-client.on(Events.MessageUpdate, (oldMessage, newMessage) => {
+client.on(Events.MessageUpdate, (oldMessage: any, newMessage: any) => {
  // Ignore bot messages to prevent loops
  if (newMessage.author?.bot) return;
  
@@ -1185,7 +1185,7 @@ client.on(Events.MessageUpdate, (oldMessage, newMessage) => {
 /**
 * Message delete event handler for debugging
 */
-client.on(Events.MessageDelete, (message) => {
+client.on(Events.MessageDelete, (message: any) => {
  // Ignore bot messages to prevent loops
  if (message.author?.bot) return;
  
@@ -1198,7 +1198,7 @@ client.on(Events.MessageDelete, (message) => {
 /**
 * Interaction create event handler
 */
-client.on(Events.InteractionCreate, async interaction => {
+client.on(Events.InteractionCreate, async (interaction: any) => {
  if (interaction.isChatInputCommand()) {
    handleCommandInteraction(interaction);
  } else if (interaction.isButton()) {
@@ -1520,12 +1520,12 @@ process.on('SIGTERM', async () => {
 });
 
 // Handle uncaught exceptions
-process.on('uncaughtException', (error) => {
+process.on('uncaughtException', (error: any) => {
  originalConsoleError('❌ Uncaught Exception:', error);
  safeDiscordLog('error', `Uncaught Exception: ${error.message}`, 'Process');
 });
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason: any, promise: any) => {
  originalConsoleError('❌ Unhandled Rejection at:', promise, 'reason:', reason);
  safeDiscordLog('error', `Unhandled Rejection: ${reason}`, 'Process');
 });
@@ -1536,3 +1536,4 @@ process.on('unhandledRejection', (reason, promise) => {
 
 // Login to Discord with your app's token
 client.login(TOKEN);
+}

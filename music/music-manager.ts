@@ -103,7 +103,7 @@ export class MusicManager {
       queue.processQueue();
     });
 
-    player.on('error', (error) => {
+    player.on('error', (error: Error) => {
       console.error(`❌ Audio player error in ${queue.guild.name}:`, error);
       queue.textChannel.send('❌ An error occurred while playing music. Skipping to next track...');
       queue.processQueue();
@@ -114,16 +114,19 @@ export class MusicManager {
       try {
         await Promise.race([
           entersState(queue.voiceConnection, VoiceConnectionStatus.Signalling, 5_000),
-          entersState(queue.voiceConnection, VoiceConnectionStatus.Connecting, 5_000),
+          entersState(queue.voiceConnection, VoiceConnectionStatus.Connecting, 5_000)
         ]);
-      } catch (error) {
+        // Connection recovered
+      } catch {
+        // Connection lost
+        queue.voiceConnection.destroy();
+        this.queues.delete(queue.guild.id);
         console.log(`🔌 Voice connection lost in ${queue.guild.name}, cleaning up...`);
-        this.destroyQueue(queue.guild.id);
       }
     });
-
-    queue.voiceConnection.on('error', (error) => {
+    queue.voiceConnection.on('error', (error: Error) => {
       console.error(`❌ Voice connection error in ${queue.guild.name}:`, error);
+      queue.textChannel.send('❌ Voice connection error. Please try again later.');
     });
   }
 
@@ -157,7 +160,7 @@ export class MusicManager {
       } else if (validation === 'playlist') {
         // Handle playlist URLs
         const playlist = await play.playlist_info(query, { incomplete: true });
-        return playlist.videos || [];
+        return (playlist as any).videos || [];
       }
 
       // Search for tracks if it's not a URL

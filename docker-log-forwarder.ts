@@ -8,7 +8,7 @@ dotenv.config();
 
 // Configuration
 const TOKEN = process.env.DISCORD_TOKEN;
-const THREAD_ID = '1376289945932660776';
+const THREAD_ID = process.env.LOG_THREAD_ID
 const CONTAINER_NAME = 'roommates-helper'; // Your Docker container name
 
 if (!TOKEN) {

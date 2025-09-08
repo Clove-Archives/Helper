@@ -59,7 +59,7 @@ const APPROVAL_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours
 
 // Configuration options - use let to allow changing it at runtime
 let MOD_CHANNEL_ID = process.env.MOD_CHANNEL_ID;
-const VERIFICATION_ROLE_ID = '1344892607255547944'; // 18+ role ID
+const VERIFICATION_ROLE_ID = process.env.VERIFICATION_ROLE_ID; // 18+ role ID
 // Add this new line
 let AGE_UNVERIFIED_ROLE_ID = process.env.AGE_UNVERIFIED_ROLE_ID;
 const CONFIG_FILE = 'verification_config.json';

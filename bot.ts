@@ -142,7 +142,7 @@ const NSFW_ACCESS_ROLE_ID = process.env.NSFW_ACCESS_ROLE_ID;
 const NSFW_NO_ACCESS_ROLE_ID = process.env.NSFW_NO_ACCESS_ROLE_ID;
 
 // Guild management configuration
-const GUILD_TO_KEEP = '1344865612559679529'; // The guild ID to keep the bot in
+const GUILD_TO_KEEP = process.env.GUILD_ID;
 
 // Create a new client instance with ALL required intents
 const client = new Client({

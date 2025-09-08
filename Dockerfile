@@ -1,19 +1,4 @@
-FROM node:20-alpine
-
-# Install build dependencies for native modules
-RUN apk add --no-cache \
-    python3 \
-    make \
-    g++ \
-    cairo-dev \
-    jpeg-dev \
-    pango-dev \
-    musl-dev \
-    giflib-dev \
-    pixman-dev \
-    pangomm-dev \
-    libjpeg-turbo-dev \
-    freetype-dev
+FROM node:20-bullseye
 
 WORKDIR /usr/src/app
 

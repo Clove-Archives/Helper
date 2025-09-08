@@ -131,18 +131,20 @@ writeHealthStatus('starting', startTime);
 dotenv.config();
 
 // Bot configuration
-const BOT_NAME = "The Roommates Helper";
-const SERVER_NAME = "Roommates";
-const TOKEN = process.env.DISCORD_TOKEN!;
-const CLIENT_ID = process.env.CLIENT_ID!;
+const BOT_NAME = process.env.BOT_NAME || "The Roommates Helper";
+const SERVER_NAME = process.env.SERVER_NAME || "Roommates";
+const TOKEN = process.env.DISCORD_TOKEN;
+if (!TOKEN) throw new Error('DISCORD_TOKEN is not set in environment variables');
+const CLIENT_ID = process.env.CLIENT_ID;
+if (!CLIENT_ID) throw new Error('CLIENT_ID is not set in environment variables');
 const AGE_UNVERIFIED_ROLE_ID = process.env.AGE_UNVERIFIED_ROLE_ID;
-
-// NSFW Role configuration
+if (!AGE_UNVERIFIED_ROLE_ID) throw new Error('AGE_UNVERIFIED_ROLE_ID is not set in environment variables');
 const NSFW_ACCESS_ROLE_ID = process.env.NSFW_ACCESS_ROLE_ID;
+if (!NSFW_ACCESS_ROLE_ID) throw new Error('NSFW_ACCESS_ROLE_ID is not set in environment variables');
 const NSFW_NO_ACCESS_ROLE_ID = process.env.NSFW_NO_ACCESS_ROLE_ID;
-
-// Guild management configuration
+if (!NSFW_NO_ACCESS_ROLE_ID) throw new Error('NSFW_NO_ACCESS_ROLE_ID is not set in environment variables');
 const GUILD_TO_KEEP = process.env.GUILD_ID;
+if (!GUILD_TO_KEEP) throw new Error('GUILD_ID is not set in environment variables');
 
 // Create a new client instance with ALL required intents
 const client = new Client({
@@ -190,7 +192,7 @@ async function manageGuilds() {
     
     // List all guilds for reference
     console.log('\nCurrent guilds:');
-    guilds.forEach(guild => {
+    guilds.forEach((guild: any) => {
       console.log(`- ${guild.name} (ID: ${guild.id})`);
     });
     
@@ -199,14 +201,14 @@ async function manageGuilds() {
     if (!targetGuild) {
       console.log(`⚠️ Bot is not in the target guild (ID: ${GUILD_TO_KEEP})`);
       console.log('Available guild IDs:');
-      guilds.forEach(guild => console.log(`- ${guild.id} (${guild.name})`));
+      guilds.forEach((guild: any) => console.log(`- ${guild.id} (${guild.name})`));
       return;
     }
     
     console.log(`✅ Target guild found: ${targetGuild.name} (${targetGuild.id})`);
     
     // Count guilds to leave
-    const guildsToLeave = guilds.filter(guild => guild.id !== GUILD_TO_KEEP);
+    const guildsToLeave = guilds.filter((guild: any) => guild.id !== GUILD_TO_KEEP);
     
     if (guildsToLeave.size === 0) {
       console.log('✅ Bot is only in the target guild. No action needed.');
@@ -570,12 +572,12 @@ async function registerCommands() {
     new SlashCommandBuilder()
       .setName('color')
       .setDescription('Manage your color role')
-      .addSubcommand(subcommand =>
+      .addSubcommand((subcommand: any) =>
         subcommand
           .setName('select')
           .setDescription('Choose a color role')
       )
-      .addSubcommand(subcommand =>
+      .addSubcommand((subcommand: any) =>
         subcommand
           .setName('remove')
           .setDescription('Remove your current color role')
@@ -585,7 +587,7 @@ async function registerCommands() {
     new SlashCommandBuilder()
       .setName('nsfw')
       .setDescription('Toggle your NSFW content access')
-      .addBooleanOption(option =>
+      .addBooleanOption((option: any) =>
         option
           .setName('value')
           .setDescription('Enable (true) or disable (false) NSFW access')
@@ -668,7 +670,7 @@ async function logCommandIds(client: Client) {
     console.log(`✅ Found ${commands.size} commands\n`);
     
     // Sort commands alphabetically by name
-    const sortedCommands = Array.from(commands.values()).sort((a, b) => a.name.localeCompare(b.name));
+    const sortedCommands = Array.from(commands.values()).sort((a: any, b: any) => a.name.localeCompare(b.name));
     
     console.log('📋 COMMAND MENTIONS (Copy these to use in Discord):');
     console.log('═'.repeat(60));
@@ -1305,7 +1307,6 @@ async function handleCommandInteraction(interaction: ChatInputCommandInteraction
        ephemeral: true 
      }).catch((err) => console.error('Error sending error message:', err));
    }
- }
 }
 
 /**

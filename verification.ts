@@ -902,7 +902,7 @@ export async function handleVerificationDecision(interaction: ButtonInteraction)
  */
 async function processApproval(interaction: ButtonInteraction, member: GuildMember, verification: PendingVerification) {
   // Add the 18+ role
-  await member.roles.add(VERIFICATION_ROLE_ID);
+  await member.roles.add(VERIFICATION_ROLE_ID!);
   
   // Remove the Age Unverified role if it exists
   if (AGE_UNVERIFIED_ROLE_ID) {

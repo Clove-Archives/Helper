@@ -321,7 +321,7 @@ class DiscordLogger {
 }
 
 // Create and export the logger instance
-export const discordLogger = new DiscordLogger(process.env.LOG_THREAD_ID);
+export const discordLogger = new DiscordLogger(process.env.LOG_THREAD_ID!);
 
 // Export the class for other instances if needed
 export { DiscordLogger, LogMessage };
